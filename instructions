@@ -1,1 +1,29 @@
+Guidelines for Using Features
 
+
+ 1. submit a PDF Document: To begin, submit a PDF document containing the knowledge base, such as `handbook.pdf`. 
+2. Document Processing: To ensure effective search, the system will process the document, extract text, and construct embeddings. 
+3. Submit a Question: Type your query into the text field and select "Ask." 
+4. Get an Answer: Using a language model that has already been trained, the system pulls pertinent information from the document and produces an answer.
+
+An explanation of the models and datasets used 
+
+Dataset: The knowledge base is the uploaded PDF document. This example makes use of `handbook.pdf`. Model for Embedding: [all-MiniLM-L6-v2] Text chunks are vector embedded using (https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2). -Language Model: flan-t5-large and google Answers are generated using https://huggingface.co/google/flan-t5-large depending on the text that was retrieved.
+
+
+
+Architecture
+ 1. Text Extraction: Use PyPDF to extract text from the uploaded PDF. 
+2. Text Splitting: To facilitate processing, divide the captured text into manageable portions. 3.Embedding Creation:Use the embedding model to create vector embeddings for every text segment. 
+4. Vector Search: To find pertinent chunks, store embeddings in Qdrant and do a similarity search. 
+5. Answer Generation: Using the received chunks as a basis, create succinct answers using the Hugging Face model.
+
+---
+
+Detailed Methodology
+
+1. Step *: Use PyPDF to extract text from the uploaded PDF. 
+Step 2:Divide the text into 500-character sections that overlap by 50 characters. 
+Step 3: Use the all-MiniLM-L6-v2 model to create embeddings for every chunk. 
+Step 4: Save the embeddings in a vector database called Qdrant that is tailored for similarity searches.
+ 5. Step 5: To obtain the top 5 most pertinent chunks, encode a query into a vector and run a similarity search in Qdrant. 6. Step 6: To produce a succinct response, combine the collected pieces and feed them to the google/flan-t5-large model.
